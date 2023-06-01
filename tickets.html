@@ -72,58 +72,39 @@ const targetAutomata = [
  
   {name : "inprogress",
   nextTag : "done",
-  nextNode : inProgressTicketsTarget
+  nextNode : inProgressTicketsTarget,
 
+  prevTag : null,
+  prevNode:null
   },
-
   {name : "done",
   nextTag : null,
-  nextNode : DoneTicketsTarget
+  nextNode : DoneTicketsTarget,
 
+  prevTag : "inprogress",
+  prevNode : inProgressTicketsTarget
   }
 
 ]
 
-/* {id:"",
-currentState:0
-} */
-
 let i = 0
-let ticketList =[
-]
+let ticketList =[]
+
 form.onsubmit = function (event) {
   event.preventDefault();
 
-//console.log(targetAutomata[currentState])
-
-//const targetNode = targetAutomata[currentState]
-//const key = targetNode.name
-
-//targetNode.next.appendChild(updateTicket(key, ticketInput.value, null))
-
-//let currentState = 0
-//currentState++
-
-  //inProgressTicketsTarget.appendChild()
-  //DoneTicketsTarget.appendChild())
-
- //0 => newTicketsTarget => inProgressTicketsTarget => DoneTicketsTarget
- //DoneTicketsTarget => inProgressTicketsTarget
+ // newTicketsTarget => inProgressTicketsTarget => DoneTicketsTarget => inProgressTicketsTarget
 
 let magicTicket = createNewTicket(ticketInput.value)
 
 newId = i++
+
 ticketList.push({
 id : newId,
-ticketNode : magicTicket,
 state : 0
 })
 
-//magicTicket = updateTicket(magicTicket, "inprogress", moveTicket(magicTicket,inProgressTicketsTarget, newId ))
 magicTicket = updateTicketV2(magicTicket, newId)
-
-
-
 
 newTicketsTarget.appendChild(magicTicket)
 
@@ -131,80 +112,44 @@ newTicketsTarget.appendChild(magicTicket)
 
 const updateTicketV2 = (ticket, id) => {
 
-
-
 const newButton = document.createElement("button");
 newButton.innerText = "inprogress"
-newButton.id = `button-${id}`
 
 newButton.addEventListener("click", ()=>{ 
 
-  if(targetAutomata[ticketList[id].state].nextTag === null) 
+  const currentTicket = ticketList[id]
+  const currentTicketState = currentTicket.state
+/* change tag to label */
+  const currentTickeNextTag = targetAutomata[currentTicketState].nextTag
+  const currentTickeNextNode = targetAutomata[currentTicketState].nextNode
+
+  const currentTickePrevTag = targetAutomata[currentTicketState].prevTag
+  const currentTickePrevNode = targetAutomata[currentTicketState].prevNode
+
+  newButton.innerText = currentTickeNextTag
+
+  currentTickeNextNode.appendChild(ticket)
+
+  if(currentTickePrevNode != null) 
   {
-    document.getElementById(`button-${id}`).remove()
-    //return
+   newButton.innerText = currentTickePrevTag
+
+   ticketList[id].state = 0
+  }
+  else
+  {
+
+    ticketList[id].state++
   }
 
-  newButton.innerText = targetAutomata[ticketList[id].state].nextTag
-
-  targetAutomata[ticketList[id].state].nextNode.appendChild(ticket)
-
-  ticketList[id].state++
-
+  console.log("id", id, "state", ticketList[id].state);
+  
 })
 
 ticket.appendChild(newButton)
 
-
 return ticket
 }
-/* 
-const moveTicket = (ticket, nextTarget, id, currentButton=null) => {
-
-    console.log("moveTicket");
-
-  return function ()
-  {
-
-    let currentState = ticketList[id].state++
-
-    console.log(targetAutomata[currentState] )
-    
-  ticket.remove()
-
-  if(currentButton !==null )
-  currentButton.remove()
-
-  nextTarget.appendChild(ticket)
-    
-  }
-
-
-} */
-/* 
-const updateTicket = (ticket, nextKey, buttonCallBack) => {
-
-  const newButton = generateButton(nextKey, buttonCallBack)
-      ticket.appendChild(newButton)
-
-      return ticket
-}
-
-
-const generateButton = (contentText, callBack) =>{
-
-const newButton = document.createElement("button");
-newButton.innerText = contentText;
-
-newButton.addEventListener("click", callBack)
-
-return newButton
-} */
-
-//ticket.appendChild(button)
-
-
-
 </script>
 
 </body>
