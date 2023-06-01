@@ -52,6 +52,7 @@
     </div>
 
 <script>
+
 const form = document.getElementById("form");
 const ticketInput = document.getElementById("ticketInput");
 
@@ -59,54 +60,150 @@ const newTicketsTarget = document.getElementById("newTickets");
 const inProgressTicketsTarget = document.getElementById("inProgressTickets");
 const DoneTicketsTarget = document.getElementById("DoneTickets");
 
-//const todolist = document.getElementById("todolist");
+const createNewTicket = ( value) => {
+const newTicket = document.createElement("div");
+newTicket.innerText = value;
+newTicket.id = value;
 
+return newTicket
+}
+
+const targetAutomata = [
+ 
+  {name : "inprogress",
+  nextTag : "done",
+  nextNode : inProgressTicketsTarget
+
+  },
+
+  {name : "done",
+  nextTag : null,
+  nextNode : DoneTicketsTarget
+
+  }
+
+]
+
+/* {id:"",
+currentState:0
+} */
+
+let i = 0
+let ticketList =[
+]
 form.onsubmit = function (event) {
   event.preventDefault();
 
-const newTicket = document.createElement("div");
-newTicket.innerText = ticketInput.value;
-newTicketsTarget.appendChild(newTicket)
+//console.log(targetAutomata[currentState])
 
-const buttonPushToInProgress = document.createElement("button");
-buttonPushToInProgress.innerText = "InProgress";
-newTicket.appendChild(buttonPushToInProgress)
+//const targetNode = targetAutomata[currentState]
+//const key = targetNode.name
 
-buttonPushToInProgress.addEventListener("click", function (event) {
-    console.log(event.target.parentNode);
+//targetNode.next.appendChild(updateTicket(key, ticketInput.value, null))
 
-    newTicket.remove()
-    buttonPushToInProgress.remove()
+//let currentState = 0
+//currentState++
 
-inProgressTicketsTarget.appendChild(newTicket)
+  //inProgressTicketsTarget.appendChild()
+  //DoneTicketsTarget.appendChild())
 
-const buttonPushToDone = document.createElement("button");
-buttonPushToDone.innerText = "Done";
-newTicket.appendChild(buttonPushToDone)
+ //0 => newTicketsTarget => inProgressTicketsTarget => DoneTicketsTarget
+ //DoneTicketsTarget => inProgressTicketsTarget
 
-buttonPushToDone.addEventListener("click", function (event) {
-console.log("buttonPushToDone");
+let magicTicket = createNewTicket(ticketInput.value)
 
-newTicket.remove()
-buttonPushToDone.remove()
+newId = i++
+ticketList.push({
+id : newId,
+ticketNode : magicTicket,
+state : 0
+})
 
-DoneTicketsTarget.appendChild(newTicket)
+//magicTicket = updateTicket(magicTicket, "inprogress", moveTicket(magicTicket,inProgressTicketsTarget, newId ))
+magicTicket = updateTicketV2(magicTicket, newId)
 
+
+
+
+newTicketsTarget.appendChild(magicTicket)
+
+}
+
+const updateTicketV2 = (ticket, id) => {
+
+
+
+const newButton = document.createElement("button");
+newButton.innerText = "inprogress"
+newButton.id = `button-${id}`
+
+newButton.addEventListener("click", ()=>{ 
+
+  if(targetAutomata[ticketList[id].state].nextTag === null) 
+  {
+    document.getElementById(`button-${id}`).remove()
+    //return
+  }
+
+  newButton.innerText = targetAutomata[ticketList[id].state].nextTag
+
+  targetAutomata[ticketList[id].state].nextNode.appendChild(ticket)
+
+  ticketList[id].state++
 
 })
 
-  
-  });
+ticket.appendChild(newButton)
 
 
-
-};
-
-function addEventListenerCallBack (event, ticket, button, target)
-{
-
-
+return ticket
 }
+/* 
+const moveTicket = (ticket, nextTarget, id, currentButton=null) => {
+
+    console.log("moveTicket");
+
+  return function ()
+  {
+
+    let currentState = ticketList[id].state++
+
+    console.log(targetAutomata[currentState] )
+    
+  ticket.remove()
+
+  if(currentButton !==null )
+  currentButton.remove()
+
+  nextTarget.appendChild(ticket)
+    
+  }
+
+
+} */
+/* 
+const updateTicket = (ticket, nextKey, buttonCallBack) => {
+
+  const newButton = generateButton(nextKey, buttonCallBack)
+      ticket.appendChild(newButton)
+
+      return ticket
+}
+
+
+const generateButton = (contentText, callBack) =>{
+
+const newButton = document.createElement("button");
+newButton.innerText = contentText;
+
+newButton.addEventListener("click", callBack)
+
+return newButton
+} */
+
+//ticket.appendChild(button)
+
+
 
 </script>
 
