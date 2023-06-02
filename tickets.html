@@ -32,7 +32,7 @@
 
     <div class="container">
 
-
+<!--
         <div id="newTickets">
 <h2>Nouveau</h2>
         </div>
@@ -49,9 +49,36 @@
 
         </div>
 
+        -->
+
     </div>
 
 <script>
+function init()
+{
+
+  function createColumn(id, title)
+  {
+  const container = document.querySelector(".container")
+
+  const column = document.createElement ("div")
+  column.id = id
+  const columnTitle = document.createElement ("h2")
+  columnTitle.innerText=title
+
+  column.appendChild(columnTitle)
+
+  container.appendChild(column)
+
+}
+
+createColumn("newTickets", "Nouveau")
+createColumn("inProgressTickets", "En cours")
+createColumn("DoneTickets", "Terminé")
+
+}
+
+init()
 
 const form = document.getElementById("form");
 const formTicketInput = document.getElementById("formTicketInput");
@@ -144,7 +171,7 @@ newButton.addEventListener("click", ()=>{
 
   const currentTicket = ticketList[id]
   const currentTicketState = currentTicket.state
-/* change tag to label */
+
   const currentTickeNextLabel = stateList[currentTicketState].nextLabel
   const currentTickeNextNode = stateList[currentTicketState].nextNode
 
@@ -170,6 +197,18 @@ newButton.addEventListener("click", ()=>{
   console.log("id", id, "state", ticketList[id].state);
   
 })
+
+
+const deleteButton = document.createElement("button")
+deleteButton.innerText = "delete"
+
+deleteButton.addEventListener("click", function()
+{
+
+ticket.remove()
+})
+
+ticket.appendChild(deleteButton)
 
 ticket.appendChild(newButton)
 
