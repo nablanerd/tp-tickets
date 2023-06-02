@@ -94,17 +94,17 @@ return newTicket
 const stateList = [
  
   {name : "inprogress",
-  nextTag : "done",
+  nextLabel : "done",
   nextNode : inProgressTicketsTarget,
 
-  prevTag : null,
+  prevLabel : null,
   prevNode:null
   },
   {name : "done",
-  nextTag : null,
+  nextLabel : null,
   nextNode : DoneTicketsTarget,
 
-  prevTag : "inprogress",
+  prevLabel : "inprogress",
   prevNode : inProgressTicketsTarget
   }
 
@@ -145,19 +145,19 @@ newButton.addEventListener("click", ()=>{
   const currentTicket = ticketList[id]
   const currentTicketState = currentTicket.state
 /* change tag to label */
-  const currentTickeNextTag = stateList[currentTicketState].nextTag
+  const currentTickeNextLabel = stateList[currentTicketState].nextLabel
   const currentTickeNextNode = stateList[currentTicketState].nextNode
 
-  const currentTickePrevTag = stateList[currentTicketState].prevTag
+  const currentTickePrevLabel = stateList[currentTicketState].prevLabel
   const currentTickePrevNode = stateList[currentTicketState].prevNode
 
-  newButton.innerText = currentTickeNextTag
+  newButton.innerText = currentTickeNextLabel
 
   currentTickeNextNode.appendChild(ticket)
 
   if(currentTickePrevNode != null) 
   {
-   newButton.innerText = currentTickePrevTag
+   newButton.innerText = currentTickePrevLabel
 
    ticketList[id].state = 0
   }
