@@ -22,7 +22,7 @@
         type="text"
         name="ticket"
         placeholder="Add a ticket"
-        id="ticketInput"
+        id="formTicketInput"
         value=""
       />
 
@@ -54,7 +54,7 @@
 <script>
 
 const form = document.getElementById("form");
-const ticketInput = document.getElementById("ticketInput");
+const formTicketInput = document.getElementById("formTicketInput");
 
 const newTicketsTarget = document.getElementById("newTickets");
 const inProgressTicketsTarget = document.getElementById("inProgressTickets");
@@ -62,13 +62,36 @@ const DoneTicketsTarget = document.getElementById("DoneTickets");
 
 const createNewTicket = ( value) => {
 const newTicket = document.createElement("div");
-newTicket.innerText = value;
-newTicket.id = value;
+
+const paragraph = document.createElement("p");
+paragraph.innerText = value
+newTicket.appendChild(paragraph)
+
+newTicket.addEventListener("dblclick", function(event)
+{
+  
+const val =  paragraph.innerText
+const input=document.createElement("input");
+input.value=val;
+
+input.onblur=function(){
+
+      paragraph.innerText = input.value
+      input.replaceWith(paragraph)
+
+		}
+	
+    paragraph.innerText = input.value
+    paragraph.replaceWith(input)
+		input.focus();
+
+})
+
 
 return newTicket
 }
 
-const targetAutomata = [
+const stateList = [
  
   {name : "inprogress",
   nextTag : "done",
@@ -95,7 +118,9 @@ form.onsubmit = function (event) {
 
  // newTicketsTarget => inProgressTicketsTarget => DoneTicketsTarget => inProgressTicketsTarget
 
-let magicTicket = createNewTicket(ticketInput.value)
+ if (formTicketInput.value === "") return
+
+let magicTicket = createNewTicket(formTicketInput.value)
 
 newId = i++
 
@@ -120,11 +145,11 @@ newButton.addEventListener("click", ()=>{
   const currentTicket = ticketList[id]
   const currentTicketState = currentTicket.state
 /* change tag to label */
-  const currentTickeNextTag = targetAutomata[currentTicketState].nextTag
-  const currentTickeNextNode = targetAutomata[currentTicketState].nextNode
+  const currentTickeNextTag = stateList[currentTicketState].nextTag
+  const currentTickeNextNode = stateList[currentTicketState].nextNode
 
-  const currentTickePrevTag = targetAutomata[currentTicketState].prevTag
-  const currentTickePrevNode = targetAutomata[currentTicketState].prevNode
+  const currentTickePrevTag = stateList[currentTicketState].prevTag
+  const currentTickePrevNode = stateList[currentTicketState].prevNode
 
   newButton.innerText = currentTickeNextTag
 
